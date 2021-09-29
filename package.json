@@ -1,0 +1,23 @@
+{
+  "name": "alexandredelemeny-makedone_6_28092021",
+  "version": "1.0.0",
+  "description": "Project 6 OpenClassrooms",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nitatemic/AlexandreDeLemeny-Makedone_6_28092021.git"
+  },
+  "author": "Nitatemic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nitatemic/AlexandreDeLemeny-Makedone_6_28092021/issues"
+  },
+  "homepage": "https://github.com/nitatemic/AlexandreDeLemeny-Makedone_6_28092021#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

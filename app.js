@@ -1,9 +1,13 @@
-const express = require('express');
+const express = require("express");
 
 const app = express();
 
-app.use((req, res) => {
-    res.json({ message: 'Votre requête a bien été reçue !' });
+app.get("/", function (req, res) {
+  res.send("Hello World!");
+});
+
+app.post("/post", function (req, res) {
+  res.send("Got a POST request");
 });
 
 module.exports = app;
