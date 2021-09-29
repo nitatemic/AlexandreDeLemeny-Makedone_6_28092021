@@ -1,5 +1,6 @@
 const express = require("express"); //ExpressJS module
 const mongoose = require("mongoose");
+var bodyParser = require("body-parser");
 
 require('dotenv').config();
 const db = process.env.MONGO_URI;  //Variable pour l'URL de la BDD
@@ -15,11 +16,17 @@ const User = require('./models/User');
 
 const app = express();
 
+//Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
 //Ajouter une route POST pour créer un nouvel utilisateur et renvoyer un message de confirmation
 //Données récupérés : mail et password.
 //Hachage du mot de passe de l'utilisateur, ajout de l'utilisateur à la base de données
 app.post("/api/auth/signup", function (req, res) {
-  //Parser le body de la requête
+  console.log(req.body);
+ 
   const {mail, password} = req.body;
   //Vérifier que les champs sont remplis
   if (!mail || !password) {
@@ -34,7 +41,7 @@ app.post("/api/auth/signup", function (req, res) {
   }, function (err, user) {
     if (err) {
       res.status(500).json({
-        error: "Internal error"
+        error: "Internal error :'( "
       });
       return;
     }
