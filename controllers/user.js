@@ -7,7 +7,9 @@ const db = process.env.MONGO_URI;  //Variable pour l'URL de la BDD
 
 mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('DB Connected')).catch(err => console.log(err));
 
-exports.createUser = (req, res, next) => {
+/* ---------- Creation d'user ---------- */
+
+exports.createUser = (req, res) => {
 
   let mail = req.body.email;
   let password = req.body.password;
@@ -63,3 +65,61 @@ exports.createUser = (req, res, next) => {
     });
   });
 }
+
+/* ---------- Fin creation d'user ---------- */
+
+
+/* ---------- Login ----------*/
+
+exports.login = (req, res) => {
+
+  let mail = req.body.email;
+  let password = req.body.password;
+  console.log(req.body);
+
+  //console.log(mail)
+  //console.log(password)
+  //Vérifier que les champs sont remplis
+  if (!mail || !password) {
+    console.log(req.body);
+    res.status(400).json({
+      error: "Missing mail or password"
+    });
+    return;
+  }
+
+  //Vérifier que le mail existe
+  User.findOne({
+    mail: mail
+  }, function (err, user) {
+    if (err) {
+      console.log("Internal error :'(");
+      res.status(500).json({
+        error: "Internal error :'( "
+      });
+      return;
+    }
+    if (!user) {
+      console.log("Mail doesn't exist");
+      res.status(400).json({
+        error: "Mail doesn't exist"
+      });
+      return;
+    }
+
+    //Vérifier que le mot de passe est correct
+    argon2.verify(user.passwordHash, password).then(match => {
+      if (!match) {
+        console.log("Wrong password");
+        res.status(400).json({
+          error: "Wrong password"
+        });
+        return;
+      }
+      console.log("Login success");
+      res.status(200).json({
+        message: "Login success"
+      });
+    });
+  });
+};
