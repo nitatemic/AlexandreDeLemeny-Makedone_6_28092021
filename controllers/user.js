@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const argon2 = require('argon2'); //Argon2 module (For password hashing)
-const jwt = require("jose");
+const jwt = require("jsonwebtoken");
 const express = require("express"); //ExpressJS module
 const app = express();
 
