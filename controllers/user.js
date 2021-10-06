@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const argon2 = require('argon2'); //Argon2 module (For password hashing)
-
+const jwt = require("jose");
 const express = require("express"); //ExpressJS module
 const app = express();
 
@@ -124,13 +124,12 @@ exports.login = (req, res, next) => {
       console.log("Login success");
       res.status(200).json({
         userId: user._id,
-        token = jwt.sign({
+        token : jwt.sign({
           userId: user._id,
         }, secret, {
         expiresIn: "24h" }   //Expire dans 24h
       )
       });
-      //Creer un token JWT pour l'utilisateur
     });
   });
 };
