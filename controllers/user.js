@@ -1,16 +1,19 @@
 const User = require('../models/user');
 const argon2 = require('argon2'); //Argon2 module (For password hashing)
 
+const express = require("express"); //ExpressJS module
+const app = express();
+
 const mongoose = require("mongoose");
 require('dotenv').config();
 const db = process.env.MONGO_URI;  //Variable pour l'URL de la BDD
+const secret = process.env.SECRET_KEY;
 
 mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('DB Connected')).catch(err => console.log(err));
 
 /* ---------- Creation d'user ---------- */
 
-exports.createUser = (req, res) => {
-
+exports.createUser = (req, res, next) => {
   let mail = req.body.email;
   let password = req.body.password;
   console.log(req.body);
@@ -71,10 +74,12 @@ exports.createUser = (req, res) => {
 
 /* ---------- Login ----------*/
 
-exports.login = (req, res) => {
-
+exports.login = (req, res, next) => {
+  console.log(req.body);
   let mail = req.body.email;
+  console.log("coucou");
   let password = req.body.password;
+  console.log("coucou");
   console.log(req.body);
 
   //console.log(mail)
@@ -118,8 +123,14 @@ exports.login = (req, res) => {
       }
       console.log("Login success");
       res.status(200).json({
-        message: "Login success"
+        userId: user._id,
+        token = jwt.sign({
+          userId: user._id,
+        }, secret, {
+        expiresIn: "24h" }   //Expire dans 24h
+      )
       });
+      //Creer un token JWT pour l'utilisateur
     });
   });
 };
