@@ -75,17 +75,9 @@ exports.createUser = (req, res, next) => {
 /* ---------- Login ----------*/
 
 exports.login = (req, res, next) => {
-  console.log(req.body);
-  let mail = req.body.email;
-  console.log("coucou");
-  let password = req.body.password;
-  console.log("coucou");
-  console.log(req.body);
-
-  //console.log(mail)
-  //console.log(password)
+  console.log(req.body); //TODO : Delete
   //Vérifier que les champs sont remplis
-  if (!mail || !password) {
+  if (!req.body.email || !req.body.password) {
     console.log(req.body);
     res.status(400).json({
       error: "Missing mail or password"
@@ -95,7 +87,7 @@ exports.login = (req, res, next) => {
 
   //Vérifier que le mail existe
   User.findOne({
-    mail: mail
+    mail: req.body.email
   }, function (err, user) {
     if (err) {
       console.log("Internal error :'(");
@@ -113,7 +105,7 @@ exports.login = (req, res, next) => {
     }
 
     //Vérifier que le mot de passe est correct
-    argon2.verify(user.passwordHash, password).then(match => {
+    argon2.verify(user.passwordHash, req.body.password).then(match => {
       if (!match) {
         console.log("Wrong password");
         res.status(400).json({
@@ -122,14 +114,14 @@ exports.login = (req, res, next) => {
         return;
       }
       console.log("Login success");
-      res.status(200).json({
-        userId: user._id,
-        token : jwt.sign({
-          userId: user._id,
-        }, secret, {
-        expiresIn: "24h" }   //Expire dans 24h
-      )
-      });
+      res.status(200).json(
+        {userId: user._id,
+          token: jwt.sign({
+            userId: user._id,
+          }, secret, {
+            expiresIn: "12h"
+          })
+        });
     });
   });
 };

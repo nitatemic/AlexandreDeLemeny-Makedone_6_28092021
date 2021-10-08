@@ -1,9 +1,10 @@
 const express = require("express"); //ExpressJS module
 const userRoutes = require("./routes/user.js")
-const userCtrl = require('./controllers/user.js')
+const sauceRoutes = require("./routes/sauce.js")
 const app = express();
 
-
+app.use(express.urlencoded({extended: true}));
+app.use(express.json()) // To parse the incoming requests with JSON payloads
 
 
 app.use((req, res, next) => {
@@ -14,5 +15,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth", userRoutes);
+app.use("/api/sauces", sauceRoutes);
 
 module.exports = app;
