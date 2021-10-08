@@ -75,7 +75,6 @@ exports.createUser = (req, res, next) => {
 /* ---------- Login ----------*/
 
 exports.login = (req, res, next) => {
-  console.log(req.body); //TODO : Delete
   //Vérifier que les champs sont remplis
   if (!req.body.email || !req.body.password) {
     console.log(req.body);
