@@ -2,7 +2,7 @@ const express = require("express"); //ExpressJS module
 const app = express();
 require('dotenv').config();
 const SECRET = process.env.SECRET_KEY;
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 app.use(express.urlencoded({extended: true}));
 app.use(express.json()) // To parse the incoming requests with JSON payloads
 
@@ -17,21 +17,22 @@ exports.checkMail = (req, res, next) => {
     next();
 }
 
-
-
-exports.checkToken = (req, res, next) => {
-    try {
-        const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, SECRET);
-        const userId = decodedToken.userId;
-        if (req.body.userId && req.body.userId !== userId) {
-            throw 'Invalid user ID';
-        } else {
-            next();
-        }
-    } catch {
-        res.status(401).json({
-            error: new Error('Invalid request!')
+//Vérifier que le token est valide
+exports.verifyToken = (req, res, next) => {
+    const token = req.headers.authorization;
+    if (!token) {
+        return res.status(401).json({
+            error: "You must be logged in to access this resource",
         });
     }
-};
+    jwt.verify(token, SECRET, (err, decoded) => {
+        if (err) {
+            console.log("Nooooon")
+            return res.status(401).json({
+                error: "You must be logged in to access this resource",
+            });
+        }
+        req.user = decoded;
+        next();
+    });
+}
