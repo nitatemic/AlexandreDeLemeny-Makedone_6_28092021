@@ -23,5 +23,5 @@ router.post('/', upload.single('image'), sauceCtrl.addSauce)
 router.get('/', sauceCtrl.getAllSauces)
 router.get('/:id', sauceCtrl.getOneSauce)
 router.delete('/:id', sauceCtrl.deleteSauce)
-
+router.post('/:id/like', sauceCtrl.changeLike)
 module.exports = router

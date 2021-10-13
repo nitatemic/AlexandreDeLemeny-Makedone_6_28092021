@@ -44,7 +44,6 @@ exports.getOneSauce = (req, res, next) => {
 
 //Supprimer l'entrée de la sauce dans la base de données et renvoyer la validation
 exports.deleteSauce = (req, res, next) => {
-    console.log("coucou")
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {    //TODO : Supprimer la photo de la sauce
                 Sauce.deleteOne({ _id: req.params.id })
@@ -53,3 +52,34 @@ exports.deleteSauce = (req, res, next) => {
             });
 }
 
+exports.changeLike = (req, res, next) => {
+    console.log(req.body.userId)
+    console.log(req.body.like)
+    Sauce.findOne({ _id: req.params.id })
+        .then(sauce => {
+
+            switch(req.body.like) {
+                case 1:
+                    sauce.likes += 1;
+                    sauce.usersLiked.push(req.body.userId);
+                    break;
+                case -1:
+                    sauce.dislikes += 1;
+                    sauce.usersDisliked.push(req.body.userId);
+                    break;
+                case 0:
+                    if(sauce.usersLiked.includes(req.body.userId)) {
+                        sauce.likes -= 1;
+                        sauce.usersLiked.splice(sauce.usersLiked.indexOf(req.body.userId), 1);
+                    }
+                    if(sauce.usersDisliked.includes(req.body.userId)) {
+                        sauce.dislikes -= 1;
+                        sauce.usersDisliked.splice(sauce.usersDisliked.indexOf(req.body.userId), 1);
+                    }
+                    break;
+            }
+            sauce.save()
+                .then(() => res.status(201).json({ message: "Like changed!" }))
+                .catch(error => res.status(400).json({ error }))
+        });
+}
