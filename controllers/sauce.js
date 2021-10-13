@@ -1,6 +1,8 @@
 const Sauce = require('../models/sauce');
 const express = require("express"); //ExpressJS module
 const app = express();
+app.use(express.urlencoded({extended: true}));
+app.use(express.json()) // To parse the incoming requests with JSON payloads
 
 const mongoose = require("mongoose");
 const User = require("../models/user");
@@ -12,30 +14,18 @@ const db = process.env.MONGO_URI;  //Variable pour l'URL de la BDD
 mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('DB Connected')).catch(err => console.log(err));
 
 //Ajouter une sauce à la base de données
-exports.addSauce = function(req, res, next) {
-    //Vérifier que toujours tous les champs sont remplis
-    if(req.body.name && req.body.manufacturer && req.body.description && req.body.mainPepper && req.body.imageUrl && req.body.heat){
-        //Recupérer l'id de l'image
-        console.log(req)
-        //Créer une sauce
-        const sauceObject = new Sauce({
-            name: req.body.name,
-            manufacturer: req.body.manufacturer,
-            description: req.body.description,
-            mainPepper: req.body.mainPepper,
-            imageUrl: req.body.imageUrl,
-            heat: req.body.heat,
-            likes: 0,
-            dislikes: 0,
-            usersLiked: [],
-            usersDisliked: [],
-            userId: req.body.userId
-        });
-        //Enregistrer la sauce dans la base de données
-        sauceObject.save()
-            .then(() => res.status(201).json({message: 'Sauce enregistrée !'}))
-            .catch(error => res.status(400).json({error}));
-    } else {
-        res.status(400).json({error: 'Tous les champs doivent être remplis !'});
-    }
+exports.addSauce = (req, res, next) => {
+    const sauceObj = JSON.parse(req.body.sauce);
+    const sauce = new Sauce({
+        ...sauceObj,
+        likes: 0,
+        dislikes: 0,
+        imageUrl: `${req.protocol}://${req.get('host')}/sauces/images/${req.file.filename}`,
+        usersLiked: [],
+        usersDisliked: []
+    });
+    sauce.save()
+        .then(() => res.status(201).json({ message: "Sauce added!" }))
+        .catch(error => res.status(400).json({ error }));
 }
+
