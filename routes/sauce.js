@@ -17,11 +17,10 @@ const upload = multer({
 })
 
 
-
-
 const router = express.Router();
 //Route post qui recupere les données du formulaire et les envoie au controlleur pour les traiter
 router.post('/', upload.single('image'), sauceCtrl.addSauce)
-
+router.get('/', sauceCtrl.getAllSauces)
+router.get('/:id', sauceCtrl.getOneSauce)
 
 module.exports = router

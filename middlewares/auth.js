@@ -19,7 +19,7 @@ exports.checkMail = (req, res, next) => {
 }
 
 //Vérifier que le token est valide
-exports.verifyToken = (req, res, next) => {
+exports.verifyToken = (req, res, next) => { //TODO : Problème de token
     const token = req.headers.authorization;
     if (!token) {
         return res.status(401).json({

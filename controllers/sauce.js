@@ -20,7 +20,7 @@ exports.addSauce = (req, res, next) => {
         ...sauceObj,
         likes: 0,
         dislikes: 0,
-        imageUrl: `${req.protocol}://${req.get('host')}/sauces/images/${req.file.filename}`,
+        imageUrl: `${req.protocol}://${req.get('host')}/public/sauces/images/${req.file.filename}`,
         usersLiked: [],
         usersDisliked: []
     });
@@ -29,3 +29,15 @@ exports.addSauce = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 }
 
+//Récupérer toutes les sauces de la base de données et les renvoyer à l'utilisateur dans un tableau
+exports.getAllSauces = (req, res, next) => {    //TODO : Problème pour l'URL de l'image
+    Sauce.find()
+        .then(sauces => res.status(200).json(sauces))
+        .catch(error => res.status(400).json({ error }));
+}
+
+exports.getOneSauce = (req, res, next) => {
+    Sauce.findOne({ _id: req.params.id })
+        .then(sauce => res.status(200).json(sauce))
+        .catch(error => res.status(404).json({ error }));
+}
