@@ -83,3 +83,28 @@ exports.changeLike = (req, res, next) => {
                 .catch(error => res.status(400).json({ error }))
         });
 }
+
+//Met à jours la sauce
+exports.modifySauce = (req, res, next) => {
+    //Si l'utilisateur a envoyé une image
+    if(req.file) {
+        const sauceObj = JSON.parse(req.body.sauce);
+        console.log(sauceObj)
+        Sauce.updateOne({ _id: req.params.id }, {
+            ...sauceObj,
+            imageUrl: `${req.protocol}://${req.get('host')}/public/sauces/images/${req.file.filename}`
+        })
+            .then(() => res.status(201).json({ message: "Sauce modified!" }))
+            .catch(error => res.status(400).json({ error }));
+    } else {
+        Sauce.updateOne({ _id: req.params.id }, {
+            name : req.body.name,
+            manufacturer : req.body.manufacturer,
+            mainPepper : req.body.mainPepper,
+            heat : req.body.heat,
+            description : req.body.description
+        })
+            .then(() => res.status(201).json({ message: "Sauce modified!" }))
+            .catch(error => res.status(400).json({ error }));
+    }
+}

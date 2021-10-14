@@ -22,6 +22,7 @@ const router = express.Router();
 router.post('/', upload.single('image'), sauceCtrl.addSauce)
 router.get('/', sauceCtrl.getAllSauces)
 router.get('/:id', sauceCtrl.getOneSauce)
+router.put('/:id', sauceCtrl.modifySauce)
 router.delete('/:id', sauceCtrl.deleteSauce)
 router.post('/:id/like', sauceCtrl.changeLike)
 module.exports = router
