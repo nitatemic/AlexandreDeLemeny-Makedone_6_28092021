@@ -4,7 +4,7 @@ const sauceRoutes = require("./routes/sauce.js");
 const app = express();
 
 app.use(express.urlencoded({extended: true}));
-app.use(express.json()) // To parse the incoming requests with JSON payloads
+app.use(express.json()); // To parse the incoming requests with JSON payloads
 
 
 app.use((req, res, next) => {

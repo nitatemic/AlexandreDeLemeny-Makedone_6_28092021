@@ -10,11 +10,11 @@ const upload = multer({
     dest: './public/images/sauces',
     fileFilter: function (req, file, cb) {
         if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-            return cb(new Error('Please upload an image'))
+            return cb(new Error('Please upload an image'));
         }
-        cb(undefined, true)
+        cb(undefined, true);
     }
-})
+});
 
 
 const router = express.Router();
@@ -25,4 +25,4 @@ router.get('/:id', sauceCtrl.getOneSauce);
 router.put('/:id', sauceCtrl.modifySauce);
 router.delete('/:id', sauceCtrl.deleteSauce);
 router.post('/:id/like', sauceCtrl.changeLike);
-module.exports = router
+module.exports = router;

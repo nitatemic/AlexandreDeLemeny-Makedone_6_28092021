@@ -2,7 +2,7 @@ const Sauce = require('../models/sauce');
 const express = require("express"); //ExpressJS module
 const app = express();
 app.use(express.urlencoded({extended: true}));
-app.use(express.json()) // To parse the incoming requests with JSON payloads
+app.use(express.json()); // To parse the incoming requests with JSON payloads //TODO : Vérifier que ça sert bien
 
 const mongoose = require("mongoose");
 require("dotenv").config();
@@ -26,20 +26,20 @@ exports.addSauce = (req, res) => {
     sauce.save()
         .then(() => res.status(201).json({ message: "Sauce added!" }))
         .catch(error => res.status(400).json({ error }));
-}
+};
 
 //Récupérer toutes les sauces de la base de données et les renvoyer à l'utilisateur dans un tableau
 exports.getAllSauces = (res) => {    //TODO : Problème pour l'URL de l'image
     Sauce.find()
         .then((sauces) => res.status(200).json(sauces))
         .catch((error) => res.status(400).json({ error }));
-}
+};
 
 exports.getOneSauce = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
         .then((sauce) => res.status(200).json(sauce))
         .catch((error) => res.status(404).json({ error }));
-}
+};
 
 //Supprimer l'entrée de la sauce dans la base de données et renvoyer la validation
 exports.deleteSauce = (req, res) => {
@@ -49,7 +49,7 @@ exports.deleteSauce = (req, res) => {
                     .then(() => res.status(200).json({ message: 'Sauce deleted!' }))
                     .catch(error => res.status(400).json({ error }));
             });
-}
+};
 
 exports.changeLike = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
@@ -77,9 +77,9 @@ exports.changeLike = (req, res) => {
             }
             sauce.save()
                 .then(() => res.status(201).json({ message: "Like changed!" }))
-                .catch(error => res.status(400).json({ error }))
+                .catch(error => res.status(400).json({ error }));
         });
-}
+};
 
 //Met à jours la sauce
 exports.modifySauce = (req, res) => {

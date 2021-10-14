@@ -1,7 +1,7 @@
 const express = require("express"); //ExpressJS module
 const app = express();
 app.use(express.urlencoded({extended: true}));
-app.use(express.json()) // To parse the incoming requests with JSON payloads
+app.use(express.json()); // To parse the incoming requests with JSON payloads
 require('dotenv').config();
 const SECRET = process.env.SECRET_KEY;
 const jwt = require("jsonwebtoken");
