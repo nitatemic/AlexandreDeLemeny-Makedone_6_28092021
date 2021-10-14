@@ -104,4 +104,4 @@ exports.modifySauce = (req, res) => {
             .then(() => res.status(201).json({ message: "Sauce modified!" }))
             .catch(error => res.status(400).json({ error }));
     }
-}
+};

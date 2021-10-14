@@ -16,7 +16,7 @@ exports.checkMail = (req, res, next) => {
         });
     }
     next();
-}
+};
 
 //Vérifier que le token est valide
 exports.verifyToken = (req, res, next) => { //TODO : Problème de token
@@ -36,4 +36,4 @@ exports.verifyToken = (req, res, next) => { //TODO : Problème de token
         req.user = decoded;
         next();
     });
-}
+};
