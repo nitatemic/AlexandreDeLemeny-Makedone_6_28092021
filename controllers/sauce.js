@@ -5,16 +5,15 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json()) // To parse the incoming requests with JSON payloads
 
 const mongoose = require("mongoose");
-const User = require("../models/user");
 require('dotenv').config();
 const db = process.env.MONGO_URI;  //Variable pour l'URL de la BDD
 
 
 
-mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => ).catch(err => );
+mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true });
 
 //Ajouter une sauce à la base de données
-exports.addSauce = (req, res, next) => {
+exports.addSauce = (req, res) => {
     const sauceObj = JSON.parse(req.body.sauce);
     const sauce = new Sauce({
         ...sauceObj,
@@ -30,31 +29,29 @@ exports.addSauce = (req, res, next) => {
 }
 
 //Récupérer toutes les sauces de la base de données et les renvoyer à l'utilisateur dans un tableau
-exports.getAllSauces = (req, res, next) => {    //TODO : Problème pour l'URL de l'image
+exports.getAllSauces = (res) => {    //TODO : Problème pour l'URL de l'image
     Sauce.find()
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(400).json({ error }));
 }
 
-exports.getOneSauce = (req, res, next) => {
+exports.getOneSauce = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error }));
 }
 
 //Supprimer l'entrée de la sauce dans la base de données et renvoyer la validation
-exports.deleteSauce = (req, res, next) => {
+exports.deleteSauce = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
-        .then(sauce => {    //TODO : Supprimer la photo de la sauce
+        .then(Sauce => {    //TODO : Supprimer la photo de la sauce
                 Sauce.deleteOne({ _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Sauce deleted!' }))
                     .catch(error => res.status(400).json({ error }));
             });
 }
 
-exports.changeLike = (req, res, next) => {
-    
-    
+exports.changeLike = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
 
@@ -85,7 +82,7 @@ exports.changeLike = (req, res, next) => {
 }
 
 //Met à jours la sauce
-exports.modifySauce = (req, res, next) => {
+exports.modifySauce = (req, res) => {
     //Si l'utilisateur a envoyé une image
     if(req.file) {
         const sauceObj = JSON.parse(req.body.sauce);

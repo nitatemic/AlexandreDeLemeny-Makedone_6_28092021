@@ -1,26 +1,22 @@
 const User = require('../models/user');
 const argon2 = require('argon2'); //Argon2 module (For password hashing)
 const jwt = require("jsonwebtoken");
-const express = require("express"); //ExpressJS module
-const app = express();
 
 const mongoose = require("mongoose");
 require('dotenv').config();
 const db = process.env.MONGO_URI;  //Variable pour l'URL de la BDD
 const secret = process.env.SECRET_KEY;
 
-mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => ).catch(err => );
+mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true });
 
 /* ---------- Creation d'user ---------- */
 
-exports.createUser = (req, res, next) => {
+exports.createUser = (req, res) => {
   let mail = req.body.email;
   let password = req.body.password;
-  
 
   //Vérifier que les champs sont remplis
   if (!mail || !password) {
-    
     res.status(400).json({
       error: "Missing mail or password"
     });
@@ -33,16 +29,12 @@ exports.createUser = (req, res, next) => {
   }, function (err, user) {
     if (err) {
       
-      res.status(500).json({
-        error: "Internal error :'( "
-      });
+      res.status(500).json({err});
       return;
     }
     if (user) {
       
-      res.status(400).json({
-        error: "Mail already used"
-      });
+      res.status(400).json({ error: "Mail already used" });
       return;
     }
 
@@ -59,8 +51,6 @@ exports.createUser = (req, res, next) => {
       //Sauvegarder newUser dans la base de données grâce à Mongoose
       newUser.save().then(response =>
       {
-        
-        
         res.status(201).json({
           message: "user created"
         });
@@ -74,7 +64,7 @@ exports.createUser = (req, res, next) => {
 
 /* ---------- Login ----------*/
 
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
   //Vérifier que les champs sont remplis
   if (!req.body.email || !req.body.password) {
     
@@ -90,9 +80,7 @@ exports.login = (req, res, next) => {
   }, function (err, user) {
     if (err) {
       
-      res.status(500).json({
-        error: "Internal error :'( "
-      });
+      res.status(500).json({err});
       return;
     }
     if (!user) {
