@@ -44,7 +44,7 @@ exports.getOneSauce = (req, res) => {
 //Supprimer l'entrée de la sauce dans la base de données et renvoyer la validation
 exports.deleteSauce = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
-        .then((Sauce) => {    //TODO : Supprimer la photo de la sauce
+        .then(() => {    //TODO : Supprimer la photo de la sauce
                 Sauce.deleteOne({ _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Sauce deleted!' }))
                     .catch(error => res.status(400).json({ error }));
