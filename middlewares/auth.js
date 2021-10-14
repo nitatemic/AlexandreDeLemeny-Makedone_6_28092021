@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 
 exports.checkMail = (req, res, next) => {
     if (!req.body.email.match(/^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/i)) {
-        console.log("Invalid mail");
+        
 
         return res.status(400).json({
             error: "Invalid mail",
@@ -28,7 +28,7 @@ exports.verifyToken = (req, res, next) => { //TODO : Problème de token
     }
     jwt.verify(token, SECRET, (err, decoded) => {
         if (err) {
-            console.log("Nooooon")
+            
             return res.status(401).json({
                 error: "You must be logged in to access this resource",
             });
