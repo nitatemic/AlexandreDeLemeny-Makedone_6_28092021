@@ -5,7 +5,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json()) // To parse the incoming requests with JSON payloads
 
 const mongoose = require("mongoose");
-require('dotenv').config();
+require("dotenv").config();
 const db = process.env.MONGO_URI;  //Variable pour l'URL de la BDD
 
 
@@ -19,7 +19,7 @@ exports.addSauce = (req, res) => {
         ...sauceObj,
         likes: 0,
         dislikes: 0,
-        imageUrl: `${req.protocol}://${req.get('host')}/public/sauces/images/${req.file.filename}`,
+        imageUrl: `${req.protocol}://${req.get("host")}/public/sauces/images/${req.file.filename}`,
         usersLiked: [],
         usersDisliked: []
     });
@@ -31,20 +31,20 @@ exports.addSauce = (req, res) => {
 //Récupérer toutes les sauces de la base de données et les renvoyer à l'utilisateur dans un tableau
 exports.getAllSauces = (res) => {    //TODO : Problème pour l'URL de l'image
     Sauce.find()
-        .then(sauces => res.status(200).json(sauces))
-        .catch(error => res.status(400).json({ error }));
+        .then((sauces) => res.status(200).json(sauces))
+        .catch((error) => res.status(400).json({ error }));
 }
 
 exports.getOneSauce = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
-        .then(sauce => res.status(200).json(sauce))
-        .catch(error => res.status(404).json({ error }));
+        .then((sauce) => res.status(200).json(sauce))
+        .catch((error) => res.status(404).json({ error }));
 }
 
 //Supprimer l'entrée de la sauce dans la base de données et renvoyer la validation
 exports.deleteSauce = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
-        .then(Sauce => {    //TODO : Supprimer la photo de la sauce
+        .then((Sauce) => {    //TODO : Supprimer la photo de la sauce
                 Sauce.deleteOne({ _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Sauce deleted!' }))
                     .catch(error => res.status(400).json({ error }));

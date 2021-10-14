@@ -40,7 +40,7 @@ exports.createUser = (req, res) => {
 
     //Hachage du mot de passe
     
-    argon2.hash(password).then(hash => {
+    argon2.hash(password).then((hash) => {
       
       //Création d'un nouvel utilisateur
       const newUser = new User({
@@ -49,7 +49,7 @@ exports.createUser = (req, res) => {
       });
 
       //Sauvegarder newUser dans la base de données grâce à Mongoose
-      newUser.save().then(response =>
+      newUser.save().then((response) =>
       {
         res.status(201).json({
           message: "User created! Response : " + response
