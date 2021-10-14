@@ -11,7 +11,7 @@ const db = process.env.MONGO_URI;  //Variable pour l'URL de la BDD
 
 
 
-mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('DB Connected')).catch(err => console.log(err));
+mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => ).catch(err => );
 
 //Ajouter une sauce à la base de données
 exports.addSauce = (req, res, next) => {
@@ -53,8 +53,8 @@ exports.deleteSauce = (req, res, next) => {
 }
 
 exports.changeLike = (req, res, next) => {
-    console.log(req.body.userId)
-    console.log(req.body.like)
+    
+    
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
 
@@ -89,7 +89,7 @@ exports.modifySauce = (req, res, next) => {
     //Si l'utilisateur a envoyé une image
     if(req.file) {
         const sauceObj = JSON.parse(req.body.sauce);
-        console.log(sauceObj)
+        
         Sauce.updateOne({ _id: req.params.id }, {
             ...sauceObj,
             imageUrl: `${req.protocol}://${req.get('host')}/public/sauces/images/${req.file.filename}`
