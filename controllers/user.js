@@ -1,26 +1,22 @@
 const User = require('../models/user');
 const argon2 = require('argon2'); //Argon2 module (For password hashing)
 const jwt = require("jsonwebtoken");
-const express = require("express"); //ExpressJS module
-const app = express();
 
 const mongoose = require("mongoose");
 require('dotenv').config();
 const db = process.env.MONGO_URI;  //Variable pour l'URL de la BDD
 const secret = process.env.SECRET_KEY;
 
-mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('DB Connected')).catch(err => console.log(err));
+mongoose.connect(db,{ useNewUrlParser: true, useUnifiedTopology: true });
 
 /* ---------- Creation d'user ---------- */
 
-exports.createUser = (req, res, next) => {
+exports.createUser = (req, res) => {
   let mail = req.body.email;
   let password = req.body.password;
-  console.log(req.body);
 
   //Vérifier que les champs sont remplis
   if (!mail || !password) {
-    console.log(req.body);
     res.status(400).json({
       error: "Missing mail or password"
     });
@@ -32,24 +28,20 @@ exports.createUser = (req, res, next) => {
     mail: mail
   }, function (err, user) {
     if (err) {
-      console.log("Internal error :'(");
-      res.status(500).json({
-        error: "Internal error :'( "
-      });
+      
+      res.status(500).json({err});
       return;
     }
     if (user) {
-      console.log("Mail already used");
-      res.status(400).json({
-        error: "Mail already used"
-      });
+      
+      res.status(400).json({ error: "Mail already used" });
       return;
     }
 
     //Hachage du mot de passe
-    console.log("Avant hash");
-    argon2.hash(password).then(hash => {
-      console.log("Après hash" + hash);
+    
+    argon2.hash(password).then((hash) => {
+      
       //Création d'un nouvel utilisateur
       const newUser = new User({
         mail,
@@ -57,12 +49,10 @@ exports.createUser = (req, res, next) => {
       });
 
       //Sauvegarder newUser dans la base de données grâce à Mongoose
-      newUser.save().then(response =>
+      newUser.save().then((response) =>
       {
-        console.log(response);
-        console.log("user created");
         res.status(201).json({
-          message: "user created"
+          message: "User created! Response : " + response
         });
       })
     });
@@ -74,10 +64,10 @@ exports.createUser = (req, res, next) => {
 
 /* ---------- Login ----------*/
 
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
   //Vérifier que les champs sont remplis
   if (!req.body.email || !req.body.password) {
-    console.log(req.body);
+    
     res.status(400).json({
       error: "Missing mail or password"
     });
@@ -89,14 +79,12 @@ exports.login = (req, res, next) => {
     mail: req.body.email
   }, function (err, user) {
     if (err) {
-      console.log("Internal error :'(");
-      res.status(500).json({
-        error: "Internal error :'( "
-      });
+      
+      res.status(500).json({err});
       return;
     }
     if (!user) {
-      console.log("Mail doesn't exist");
+      
       res.status(400).json({
         error: "Mail doesn't exist"
       });
@@ -106,13 +94,13 @@ exports.login = (req, res, next) => {
     //Vérifier que le mot de passe est correct
     argon2.verify(user.passwordHash, req.body.password).then(match => {
       if (!match) {
-        console.log("Wrong password");
+        
         res.status(400).json({
           error: "Wrong password"
         });
         return;
       }
-      console.log("Login success");
+      
       res.status(200).json(
         {userId: user._id,
           token: jwt.sign({
