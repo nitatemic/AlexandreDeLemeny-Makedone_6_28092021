@@ -19,21 +19,17 @@ exports.checkMail = (req, res, next) => {
 };
 
 //Vérifier que le token est valide
-exports.verifyToken = (req, res, next) => { //TODO : Problème de token
-    const token = req.headers.authorization;
+exports.verifyToken = (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[1];
     if (!token) {
         return res.status(401).json({
             error: "You must be logged in to access this resource",
         });
     }
-    jwt.verify(token, SECRET, (err, decoded) => {
-        if (err) {
-            
-            return res.status(401).json({
-                error: "You must be logged in to access this resource",
-            });
-        }
-        req.user = decoded;
+    if (jwt.verify(token, SECRET)) {
         next();
-    });
+    }
+    else {
+        res.status(400);
+         }
 };

@@ -3,5 +3,5 @@ const express = require('express');
 
 
 const router = express.Router();
-router.get("/", isAliveCtrl.isAlive)
+router.get("/", isAliveCtrl.isAlive);
 module.exports = router;

@@ -19,7 +19,7 @@ exports.addSauce = (req, res) => {
         ...sauceObj,
         likes: 0,
         dislikes: 0,
-        imageUrl: `${req.protocol}://${req.get("host")}/public/sauces/images/${req.file.filename}`,
+        imageUrl: `${req.protocol}://${req.get("host")}/public/images/sauces/${req.file.filename}`,
         usersLiked: [],
         usersDisliked: []
     });
@@ -86,10 +86,9 @@ exports.modifySauce = (req, res) => {
     //Si l'utilisateur a envoyé une image
     if(req.file) {
         const sauceObj = JSON.parse(req.body.sauce);
-        
         Sauce.updateOne({ _id: req.params.id }, {
             ...sauceObj,
-            imageUrl: `${req.protocol}://${req.get('host')}/public/sauces/images/${req.file.filename}`
+            imageUrl: `${req.protocol}://${req.get('host')}/public/images/sauces/${req.file.filename}`
         })
             .then(() => res.status(201).json({ message: "Sauce modified!" }))
             .catch(error => res.status(400).json({ error }));
