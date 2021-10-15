@@ -1,4 +1,6 @@
-const http = require('http');
+require('dotenv').config();
+const PROTOCOL = process.env.PROTOCOL;  //Variable pour l'URL de la BDD
+const http = require(PROTOCOL);
 const app = require('./app');
 
 const normalizePort = val => {
