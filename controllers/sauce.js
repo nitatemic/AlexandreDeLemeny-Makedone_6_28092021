@@ -29,7 +29,7 @@ exports.addSauce = (req, res) => {
 };
 
 //Récupérer toutes les sauces de la base de données et les renvoyer à l'utilisateur dans un tableau
-exports.getAllSauces = (res) => {    //TODO : Problème pour l'URL de l'image
+exports.getAllSauces = (req, res) => {    //TODO : Problème pour l'URL de l'image
     Sauce.find()
         .then((sauces) => res.status(200).json(sauces))
         .catch((error) => res.status(400).json({ error }));
