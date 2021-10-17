@@ -1,5 +1,5 @@
 # AlexandreDeLemeny-Makedone_6_28092021
-
+[![Codacy Security Scan](https://github.com/nitatemic/AlexandreDeLemeny-Makedone_6_28092021/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/nitatemic/AlexandreDeLemeny-Makedone_6_28092021/actions/workflows/codacy-analysis.yml) [![CodeQL](https://github.com/nitatemic/AlexandreDeLemeny-Makedone_6_28092021/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/nitatemic/AlexandreDeLemeny-Makedone_6_28092021/actions/workflows/codeql-analysis.yml)[![OSSAR](https://github.com/nitatemic/AlexandreDeLemeny-Makedone_6_28092021/actions/workflows/ossar-analysis.yml/badge.svg)](https://github.com/nitatemic/AlexandreDeLemeny-Makedone_6_28092021/actions/workflows/ossar-analysis.yml)
 ## English
 Project 6 OpenClassrooms
 
