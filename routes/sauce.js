@@ -16,7 +16,6 @@ const upload = multer({
     }
 });
 
-
 const router = express.Router();
 //Route post qui recupere les données du formulaire et les envoie au controlleur pour les traiter
 router.post('/',authMiddleware.verifyToken, upload.single('image'), sauceCtrl.addSauce);

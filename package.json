@@ -18,9 +18,10 @@
   },
   "homepage": "https://github.com/nitatemic/AlexandreDeLemeny-Makedone_6_28092021#readme",
   "dependencies": {
-    "argon2": "^0.28.2",
+    "argon2": "^0.28.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.8",
     "mongoose-unique-validator": "^3.0.0",

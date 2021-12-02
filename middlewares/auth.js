@@ -22,7 +22,7 @@ exports.checkMail = (req, res, next) => {
 exports.verifyToken = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     if (!token) {
-        return res.status(401).json({
+        return res.status(403).json({
             error: "You must be logged in to access this resource",
         });
     }
@@ -30,6 +30,6 @@ exports.verifyToken = (req, res, next) => {
         next();
     }
     else {
-        res.status(400);
+        res.status(403);
          }
 };

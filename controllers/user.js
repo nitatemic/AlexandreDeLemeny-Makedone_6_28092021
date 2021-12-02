@@ -39,7 +39,6 @@ exports.createUser = (req, res) => {
     }
 
     //Hachage du mot de passe
-    
     argon2.hash(password).then((hash) => {
       
       //Création d'un nouvel utilisateur
